@@ -2,11 +2,12 @@
   background-color: rgb(227 233 255);
 }
 
+
 .todo-body {
   border: 1px solid black;
   border-radius: 5px;
-  width: 500px;
-  height: 600px;
+  width: 600px;
+  height: 80vh;
 
   position: absolute;
   top: 50%;
@@ -26,6 +27,21 @@
 
 .todo-list {
   width: 100%;
-  height: 450px;
+  height: 60vh;
   overflow: auto;
+}
+
+.todoItem {
+  width: 90%;
+  height: 40px;
+  background-color: beige;
+  border-radius: 5px;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+
+  padding: 10px 20px 10px 20px;
+  text-align: center;
 }

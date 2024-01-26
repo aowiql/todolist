@@ -2,13 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const addBtn = document.querySelector('.addBtn'); 
   const todoLists = document.querySelector('.todo-list')
-  let inputTodo = document.querySelector('.inputTodo');
+  const inputTodo = document.querySelector('.inputTodo');
 
   const delAllBtn = document.querySelector('.delAllBtn');
 
   // 투두 리스트 추가
   addBtn.addEventListener('click', (e) => {
     const item = document.createElement('div');
+    item.classList.add('todoItem');
 
     const text = document.createElement('span');
 
