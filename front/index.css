@@ -1,0 +1,31 @@
+.back-ground {
+  background-color: rgb(227 233 255);
+}
+
+.todo-body {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 500px;
+  height: 600px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+
+  padding-left: 30px;
+}
+
+.todo-title-div {
+  width: 100%;
+  height: 70px;
+}
+
+.todo-list {
+  width: 100%;
+  height: 450px;
+  overflow: auto;
+}
