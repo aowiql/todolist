@@ -47,7 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
 
-  // 백엔드 전송
+  // 백엔드
+
+  // GET
+  fetch(`${backUrl}/api/lists`)
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(todo => {
+        const item = document.createElement('div');
+        item.classList.add('todoItem');
+
+        const text = document.createElement('span');
+        text.textContent = todo.todoTask;
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '삭제';
+
+        item.appendChild(text);
+        item.appendChild(delBtn);
+        todoLists.append(item);
+      })
+    })
 
   // POST
 
