@@ -30,4 +30,28 @@ public class TodoListDAOImpl implements TodoListDAO {
 
         return todoLists;
     }
+
+    @Override
+    public TodoLists findById(int theId) {
+
+        TodoLists theTodo = entityManager.find(TodoLists.class, theId);
+
+        return theTodo;
+    }
+
+    @Override
+    public TodoLists save(TodoLists theTodo) {
+
+        TodoLists dbTodo = entityManager.merge(theTodo);
+
+        return dbTodo;
+    }
+
+    @Override
+    public void deleteById(int theId) {
+
+        TodoLists deleteTodo = entityManager.find(TodoLists.class, theId);
+
+        entityManager.remove(deleteTodo);
+    }
 }

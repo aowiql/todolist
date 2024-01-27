@@ -1,10 +1,10 @@
-package com.todolist.todolist.dao;
+package com.todolist.todolist.service;
 
 import com.todolist.todolist.entity.TodoLists;
 
 import java.util.List;
 
-public interface TodoListDAO {
+public interface TodoService {
 
     List<TodoLists> findAll();
 
