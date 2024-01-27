@@ -1,6 +1,5 @@
 package com.todolist.todolist.rest;
 
-import com.todolist.todolist.dao.TodoListDAO;
 import com.todolist.todolist.entity.TodoLists;
 import com.todolist.todolist.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +35,25 @@ public class TodoListRestController {
         return dbTodo;
     }
 
+    // 게시글 수정
+    @PutMapping("/lists")
+    public TodoLists updateTodo(@RequestBody TodoLists theTodo) {
+        TodoLists dbTodo = todoService.save(theTodo);
+
+        return dbTodo;
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/lists/{todoId}")
+    public String deleteTodo(@PathVariable int todoId) {
+        TodoLists todoLists = todoService.findById(todoId);
+
+        if(todoLists == null) {
+            throw new RuntimeException("Todo lists not found - " + todoId);
+        }
+
+        todoService.deleteById(todoId);
+
+        return "Delete todo id - " + todoId;
+    }
 }
