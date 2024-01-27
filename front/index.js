@@ -6,13 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const delAllBtn = document.querySelector('.delAllBtn');
 
+  const backUrl = 'http://localhost:8080';
+
   // 투두 리스트 추가
   addBtn.addEventListener('click', (e) => {
     const item = document.createElement('div');
     item.classList.add('todoItem');
 
     const text = document.createElement('span');
-
     const delBtn = document.createElement('button');
     delBtn.textContent = '삭제';
     
@@ -26,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
       
       inputTodo.value = '';
       inputTodo.focus();
+
+      // backend API
+      addTodoBackend(text.textContent);
     }
 
     // 투두리스트 하나 삭제
@@ -41,4 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
       todoLists.removeChild(todoLists.lastChild);
     }
   })
+
+
+  // 백엔드 전송
+
+  // POST
+
+  function addTodoBackend(todoTask) {
+    fetch(`${backUrl}/api/lists`, {
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({ todoTask, todoDone:false}),
+    });
+  }
+
 })
