@@ -1,3 +1,6 @@
+import { getTodoItems } from './get.js';
+import { addTodoBackend } from './post.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
 
   const addBtn = document.querySelector('.addBtn'); 
@@ -7,6 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const delAllBtn = document.querySelector('.delAllBtn');
 
   const backUrl = 'http://localhost:8080';
+
+  // GET
+  getTodoItems(backUrl, todoLists);
 
   // 투두 리스트 추가
   addBtn.addEventListener('click', (e) => {
@@ -29,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       inputTodo.focus();
 
       // backend API
-      addTodoBackend(text.textContent);
+      if(text.textContent !== false) {
+        addTodoBackend(backUrl, text.textContent);
+      }
     }
 
     // 투두리스트 하나 삭제
@@ -46,47 +54,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
-
-  // 백엔드
-
-  // GET
-  try {
-    const response = await fetch(`${backUrl}/api/lists`);
-    const data = await response.json();
-
-    data.forEach(todo => {
-      const item = document.createElement('div');
-      item.classList.add('todoItem');
-
-      const text = document.createElement('span');
-      text.textContent = todo.todoTask;
-
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '삭제';
-
-      item.appendChild(text);
-      item.appendChild(delBtn);
-      todoLists.append(item);
-    });
-
-  } catch (error) {
-    console.error('Error data:', error);
-  }
-
-
-  // POST
-  const addTodoBackend = async (todoTask) => {
-    try {
-      await fetch(`${backUrl}/api/lists`, {
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ todoTask, todoDone:false }),
-      });
-    } catch (error) {
-      console.error('Error',error);
-    }
-  };
-  
 });
