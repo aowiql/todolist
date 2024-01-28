@@ -19,19 +19,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   await getTodoItems(backUrl, todoLists);
 
   const todoItems = document.querySelectorAll('.todoItem');
-  console.log(todoItems);
 
   todoItems.forEach((item) => {
     const todoId = item.getAttribute('todoId');
-    const deleteButton = item.querySelector(`.todoId\\=${todoId}`);
+    const deleteButton = item.querySelector('button');
     
-    deleteButton.addEventListener('click', () => {
-      deleteTodoBackend(backUrl, parseInt(todoId));
+    // GET -> DELETE
+    deleteButton.addEventListener('click', async () => {
+      await deleteTodoBackend(backUrl, parseInt(todoId));
+      todoLists.removeChild(item);
     });
   });
 
   // 투두 리스트 추가
-  addBtn.addEventListener('click', (e) => {
+  addBtn.addEventListener('click', async () => {
     const item = document.createElement('div');
     item.classList.add('todoItem');
 
@@ -49,24 +50,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // backend API
       if(text.textContent.trim() !== '') {
-        addTodoBackend(backUrl, text.textContent);
+        const addItem = await addTodoBackend(backUrl, text.textContent);
+        
+        item.setAttribute('todoId', addItem.id);
+
+        // POST -> DELETE
+        const deleteButton = item.querySelector('button');
+        deleteButton.addEventListener('click', async () => {
+         await deleteTodoBackend(backUrl, parseInt(addItem.id));
+         todoLists.removeChild(item);
+        });
       }
     }
   })
 
   // 투두리스트 하나 삭제
-  delBtn.addEventListener('click', (e) => {
-      console.log('삭제 버튼 클릭됨');
+  // delBtn.addEventListener('click', (e) => {
+  //     console.log('삭제 버튼 클릭됨');
 
-      const item = e.target.parentNode;
-      todoLists.removeChild(item);
-      console.log('Parent Node:', item);
+  //     const item = e.target.parentNode;
+  //     todoLists.removeChild(item);
+  //     console.log('Parent Node:', item);
 
-      const todoId = item.getAttribute('todoId');
-      console.log('Todo ID:', todoId);
+  //     const todoId = item.getAttribute('todoId');
+  //     console.log('Todo ID:', todoId);
 
-      deleteTodoBackend(backUrl, todoId);
-  });
+  //     deleteTodoBackend(backUrl, todoId);
+  // });
 
   // 전체 삭제
   delAllBtn.addEventListener('click', (e) => {
