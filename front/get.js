@@ -8,6 +8,9 @@ export const getTodoItems = async (backUrl, todoLists) => {
       item.setAttribute('todoId', todo.id);
       item.classList.add('todoItem');
 
+      const checkBox = document.createElement('input');
+      checkBox.type = 'checkbox';
+
       const text = document.createElement('span');
       text.textContent = todo.todoTask;
 
@@ -23,6 +26,7 @@ export const getTodoItems = async (backUrl, todoLists) => {
         item.classList.add('notCompleted');
       }
 
+      item.appendChild(checkBox);
       item.appendChild(text);
       item.appendChild(delBtn);
       todoLists.append(item);
