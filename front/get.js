@@ -15,6 +15,14 @@ export const getTodoItems = async (backUrl, todoLists) => {
       delBtn.textContent = '삭제';
       delBtn.classList.add(`todoId=${todo.id}`);
 
+      const todoDone = todo.todoDone;
+
+      if(todoDone) {
+        item.classList.add('completed');
+      } else {
+        item.classList.add('notCompleted');
+      }
+
       item.appendChild(text);
       item.appendChild(delBtn);
       todoLists.append(item);
