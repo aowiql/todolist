@@ -3,17 +3,14 @@ import { addTodoBackend } from './post.js';
 import { deleteTodoBackend } from './delete.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-
   const addBtn = document.querySelector('.addBtn'); 
   const todoLists = document.querySelector('.todo-list')
   const inputTodo = document.querySelector('.inputTodo');
+  const delAllBtn = document.querySelector('.delAllBtn');
+  const backUrl = 'http://localhost:8080';
 
   const delBtn = document.createElement('button');
   delBtn.textContent = '삭제';
-
-  const delAllBtn = document.querySelector('.delAllBtn');
-
-  const backUrl = 'http://localhost:8080';
 
   // GET
   await getTodoItems(backUrl, todoLists);
@@ -31,14 +28,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  delBtn.addEventListener('click', async () => {
+    const todoId = delBtn.parentElement.getAttribute('todoId');
+
+    if(todoId) {
+      await deleteTodoBackend(backUrl, parseInt(todoId));
+      todoLists.removeChild(delBtn.parentElement);
+    }
+  })
+
   // 투두 리스트 추가
   addBtn.addEventListener('click', async () => {
     const item = document.createElement('div');
     item.classList.add('todoItem');
 
     const text = document.createElement('span');
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '삭제';
+  
     
-    if(inputTodo.value != false) {
+    if(inputTodo.value != '') {
       text.textContent = inputTodo.value;
 
       item.appendChild(text);
@@ -49,34 +59,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       inputTodo.focus();
 
       // backend API
+      const addItem = await addTodoBackend(backUrl, text.textContent);
+      
       if(text.textContent.trim() !== '') {
-        const addItem = await addTodoBackend(backUrl, text.textContent);
-        
+        console.log('ad',addItem)
         item.setAttribute('todoId', addItem.id);
 
-        // POST -> DELETE
-        const deleteButton = item.querySelector('button');
-        deleteButton.addEventListener('click', async () => {
-         await deleteTodoBackend(backUrl, parseInt(addItem.id));
-         todoLists.removeChild(item);
-        });
       }
+        // POST -> DELETE
+         delBtn.addEventListener('click', async () => {
+          await deleteTodoBackend(backUrl, parseInt(addItem.id));
+          todoLists.removeChild(item);
+         });
     }
   })
-
-  // 투두리스트 하나 삭제
-  // delBtn.addEventListener('click', (e) => {
-  //     console.log('삭제 버튼 클릭됨');
-
-  //     const item = e.target.parentNode;
-  //     todoLists.removeChild(item);
-  //     console.log('Parent Node:', item);
-
-  //     const todoId = item.getAttribute('todoId');
-  //     console.log('Todo ID:', todoId);
-
-  //     deleteTodoBackend(backUrl, todoId);
-  // });
 
   // 전체 삭제
   delAllBtn.addEventListener('click', (e) => {
