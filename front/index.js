@@ -105,11 +105,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   })
 
-  // 전체 삭제
-  delAllBtn.addEventListener('click', (e) => {
-    while(todoLists.childNodes.length > 2) {
-      todoLists.removeChild(todoLists.lastChild);
-    }
-  })
-
 });
