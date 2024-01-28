@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   const addBtn = document.querySelector('.addBtn'); 
   const todoLists = document.querySelector('.todo-list')
@@ -50,35 +50,43 @@ document.addEventListener('DOMContentLoaded', () => {
   // 백엔드
 
   // GET
-  fetch(`${backUrl}/api/lists`)
-    .then(response => response.json())
-    .then(data => {
-      data.forEach(todo => {
-        const item = document.createElement('div');
-        item.classList.add('todoItem');
+  try {
+    const response = await fetch(`${backUrl}/api/lists`);
+    const data = await response.json();
 
-        const text = document.createElement('span');
-        text.textContent = todo.todoTask;
+    data.forEach(todo => {
+      const item = document.createElement('div');
+      item.classList.add('todoItem');
 
-        const delBtn = document.createElement('button');
-        delBtn.textContent = '삭제';
+      const text = document.createElement('span');
+      text.textContent = todo.todoTask;
 
-        item.appendChild(text);
-        item.appendChild(delBtn);
-        todoLists.append(item);
-      })
-    })
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '삭제';
 
-  // POST
-
-  function addTodoBackend(todoTask) {
-    fetch(`${backUrl}/api/lists`, {
-      method:'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body:JSON.stringify({ todoTask, todoDone:false}),
+      item.appendChild(text);
+      item.appendChild(delBtn);
+      todoLists.append(item);
     });
+
+  } catch (error) {
+    console.error('Error data:', error);
   }
 
-})
+
+  // POST
+  const addTodoBackend = async (todoTask) => {
+    try {
+      await fetch(`${backUrl}/api/lists`, {
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ todoTask, todoDone:false }),
+      });
+    } catch (error) {
+      console.error('Error',error);
+    }
+  };
+  
+});
