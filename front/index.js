@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addBtn = document.querySelector('.addBtn'); 
   const todoLists = document.querySelector('.todo-list')
   const inputTodo = document.querySelector('.inputTodo');
-  const delAllBtn = document.querySelector('.delAllBtn');
   const backUrl = 'http://localhost:8080';
 
   const delBtn = document.createElement('button');
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
-  // PUT
+  // GET -> PUT
   todoItems.forEach((item) => {
     const todoId = item.getAttribute('todoId');
     const checkbox = item. querySelector('input[type="checkbox"]');
@@ -76,7 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
   
-    
     if(inputTodo.value != '') {
       text.textContent = inputTodo.value;
 
@@ -103,6 +101,27 @@ document.addEventListener('DOMContentLoaded', async () => {
          });
     }
 
-  })
+   // POST -> PUT
+   const todoId = item.getAttribute('todoId');
+   const checkbox = item.querySelector('input[type="checkbox"]');
+
+   if (checkbox) {
+     checkbox.addEventListener('change', async () => {
+       const success = await updateTodo(backUrl, parseInt(todoId), checkbox);
+
+       if (success) {
+         console.log(`Todo ${todoId} status updated`);
+         item.classList.toggle('completed', checkbox.checked);
+         item.classList.toggle('notCompleted', !checkbox.checked);
+       } else {
+         console.error(`Failed to update todo ${todoId} status`);
+         checkbox.checked = !checkbox.checked;
+       }
+     });
+   } else {
+     console.error('Checkbox not found inside todoItem');
+   }
+
+  });
 
 });

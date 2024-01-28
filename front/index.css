@@ -47,10 +47,12 @@
   margin: auto;
 }
 
-.todoItem.completed {
-  color: black;
+.todoItem.completed > span {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
-.todoItem.notCompleted {
-  color: red;
+.todoItem.notCompleted > span {
+  text-decoration: none;
+  opacity: 1;
 }
