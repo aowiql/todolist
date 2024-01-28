@@ -38,6 +38,8 @@ public class TodoListRestController {
     // 게시글 수정
     @PutMapping("/lists")
     public TodoLists updateTodo(@RequestBody TodoLists theTodo) {
+        theTodo.setTodoDone(!theTodo.isTodoDone());
+
         TodoLists dbTodo = todoService.save(theTodo);
 
         return dbTodo;

@@ -1,6 +1,7 @@
 import { getTodoItems } from './get.js';
 import { addTodoBackend } from './post.js';
 import { deleteTodoBackend } from './delete.js';
+import { updateTodo } from './put.js'
 
 document.addEventListener('DOMContentLoaded', async () => {
   const addBtn = document.querySelector('.addBtn'); 
@@ -37,6 +38,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
+  // PUT
+  todoItems.forEach((item) => {
+    const todoId = item.getAttribute('todoId');
+    const checkbox = item. querySelector('input[type="checkbox"]');
+
+    if(checkbox) {
+
+      checkbox.addEventListener('change', async () => {
+        const success = await updateTodo(backUrl, parseInt(todoId), checkbox);
+        
+        if (success) {
+          console.log(`Todo ${todoId} status updated`);
+
+          item.classList.toggle('completed', checkbox.checked);
+          item.classList.toggle('notCompleted', !checkbox.checked);
+        } else {
+          console.error(`Failed to update todo ${todoId} status`);
+          checkbox.checked = !checkbox.checked;
+        }
+      })
+    } else {
+      console.error("Checkbox not found inside todoItem");
+    }
+  });
+
   // 투두 리스트 추가
   addBtn.addEventListener('click', async () => {
     const item = document.createElement('div');
@@ -46,14 +72,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const delBtn = document.createElement('button');
     delBtn.textContent = '삭제';
+
+    const checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
   
     
     if(inputTodo.value != '') {
       text.textContent = inputTodo.value;
 
+      item.appendChild(checkBox);
       item.appendChild(text);
-      todoLists.append(item);
       item.append(delBtn);
+      todoLists.append(item);
       
       inputTodo.value = '';
       inputTodo.focus();
@@ -72,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           todoLists.removeChild(item);
          });
     }
+
   })
 
   // 전체 삭제

@@ -41,10 +41,17 @@ public class TodoListDAOImpl implements TodoListDAO {
 
     @Override
     public TodoLists save(TodoLists theTodo) {
+        if(theTodo.getId() == 0) {
+            entityManager.persist(theTodo);
+        } else {
+            TodoLists existingTodo = entityManager.find(TodoLists.class, theTodo.getId());
 
-        TodoLists dbTodo = entityManager.merge(theTodo);
+//            existingTodo.setTodoTask(theTodo.getTodoTask());
 
-        return dbTodo;
+            existingTodo.setTodoDone(!existingTodo.isTodoDone());
+        }
+
+        return theTodo;
     }
 
     @Override
