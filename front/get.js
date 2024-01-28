@@ -5,6 +5,7 @@ export const getTodoItems = async (backUrl, todoLists) => {
 
     data.forEach((todo) => {
       const item = document.createElement('div');
+      item.setAttribute('todoId', todo.id);
       item.classList.add('todoItem');
 
       const text = document.createElement('span');
@@ -12,6 +13,7 @@ export const getTodoItems = async (backUrl, todoLists) => {
 
       const delBtn = document.createElement('button');
       delBtn.textContent = '삭제';
+      delBtn.classList.add(`todoId=${todo.id}`);
 
       item.appendChild(text);
       item.appendChild(delBtn);
